@@ -16,8 +16,6 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 //
 
-#![feature(decl_macro)]
-
 use std::{thread, time::Duration};
 use discord_rpc_client::Client;
 
