@@ -16,42 +16,55 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 //
 
-use std::{thread, time::Duration};
 use discord_rpc_client::Client;
+use rand::prelude::*;
+use std::{thread, time::Duration};
 
-fn generate_activity_phase(client: &mut Client, state: &str) -> Result<(), Box<dyn std::error::Error>> {
-    client.set_activity(|a| a
-        .state(state)
-        .details("Senpai... will... be... mine...")
-        .assets(|a| a
-            .large_text("This might be the game's box art one day!")
-            .large_image("boxart")))?;
+fn generate_activity_phase(
+    client: &mut Client,
+    state: &str,
+) -> Result<(), Box<dyn std::error::Error>> {
+    client.set_activity(|a| {
+        a.state(state)
+            .details("Senpai... will... be... mine...")
+            .assets(|a| {
+                a.large_text("This might be the game's box art one day!")
+                    .large_image("boxart")
+            })
+    })?;
     Ok(())
 }
 
 fn main() -> Result<(), Box<dyn std::error::Error>> {
     let mut rpc_client = Client::new(560185502691491841);
+    let mut rng = rand::thread_rng();
 
     rpc_client.start();
 
-    println!("beginning verification routine. send `-verifyme` to MidoriBot#2780 within 30 seconds for this to work");
+    println!("beginning verification routine. send `-verifyme` to MidoriBot#2780 within 20 seconds for this to work");
 
     generate_activity_phase(&mut rpc_client, "At the title screen!")?;
-    thread::sleep(Duration::from_secs(30));
+    thread::sleep(Duration::from_secs((rng.gen::<f64>() * 4f64 + 20f64) as u64));
 
     generate_activity_phase(&mut rpc_client, "Accepting a mission!")?;
-    thread::sleep(Duration::from_secs(10));
+    thread::sleep(Duration::from_secs((rng.gen::<f64>() * 8f64 + 2f64) as u64));
 
     generate_activity_phase(&mut rpc_client, "At School")?;
-    thread::sleep(Duration::from_secs(5));
+    thread::sleep(Duration::from_secs(1));
 
-    for m in 0..12 {
-        generate_activity_phase(&mut rpc_client, &format!("At School, 7:{:0>2} AM, Before Class, Monday, Mission Mode", m))?;
+    for m in 0..(rng.gen::<f64>() * 20f64 + 10f64) as u64 {
+        generate_activity_phase(
+            &mut rpc_client,
+            &format!(
+                "At School, 7:{:0>2} AM, Before Class, Monday, Mission Mode",
+                m
+            ),
+        )?;
         thread::sleep(Duration::from_secs(20));
     }
 
     generate_activity_phase(&mut rpc_client, "Awaiting Verification")?;
-    thread::sleep(Duration::from_secs(30));
+    thread::sleep(Duration::from_secs((rng.gen::<f64>() * 4f64 + 30f64) as u64));
 
     println!("verification routine finished. assuming everything was done properly, you should now be verified");
 
