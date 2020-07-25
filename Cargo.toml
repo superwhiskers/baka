@@ -1,0 +1,13 @@
+[package]
+name = "baka"
+version = "0.1.0"
+authors = ["superwhiskers <whiskerdev@protonmail.com>"]
+edition = "2018"
+license = "GPL-3.0"
+
+[dependencies]
+discord-rpc-client = "^0.3"
+
+[profile.release]
+lto = true
+opt-level = 3
